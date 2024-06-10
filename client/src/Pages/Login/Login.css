@@ -1,0 +1,139 @@
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.login-form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  height: 600px;
+  text-align: center;
+}
+
+.login-header {
+  margin-bottom: 80px;
+}
+
+.login-title {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.login-subtitle {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.login-subtitle a {
+  color: #f78407;
+  text-decoration: none;
+}
+
+.login-form-group {
+  margin-bottom: 20px;
+}
+
+.login-form-group input {
+  width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 20px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.input-blue {
+  background-color: #e7f3ff; /* Light blue background */
+}
+
+.input-red {
+  background-color: #ffe7e7; /* Light red background */
+}
+
+.login-form-group input::placeholder {
+  color: #999;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.login-form-group input:focus {
+  outline: none;
+  border-bottom: 3px solid #f78407;
+  transition: border-color 0.3s ease;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  padding: 10px;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.forgot-password a {
+  font-size: 18px;
+  font-weight: 500;
+  color: #f78407;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.login-section button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.login-section button:hover {
+  background-color: #f78407;
+}
