@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Align items to the left */
+    justify-content: center;
+     padding: 20px;
+}
+
+.small {
+    margin-bottom: 20px;
+    color: #FF8400;
+    text-align: left;
+    /* Align text to the left */
+}
+
+.heading {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #4B456F;
+    text-align: left;
+    /* Align text to the left */
+}
+
+.paragraph {
+    font-size: 1.2em;
+    text-align: left;
+    /* Align text to the left */
+    max-width: 600px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.link {
+    color: #fff;
+    text-decoration: none;
+}

@@ -2,10 +2,10 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from './Pages/Home/Home';
-import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import { useEffect } from 'react';
 import axios from './axios/axios';
+import LoginPage from './Pages/Login/LoginPage';
 
 function App() {
   const navigate = useNavigate ()
@@ -15,8 +15,9 @@ function App() {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-
       })
+
+      console.log(data)
       
     } catch (error) {
       console.log(error)
@@ -32,7 +33,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </div>

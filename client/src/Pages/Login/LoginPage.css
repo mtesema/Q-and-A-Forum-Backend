@@ -1,0 +1,42 @@
+.login-main-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+    /* Adjust opacity as needed */
+}
+.login-container{
+
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    height: 500px;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+
+    .login-main-page{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+    }
+
+
+}
