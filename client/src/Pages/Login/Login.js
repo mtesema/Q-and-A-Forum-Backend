@@ -2,12 +2,14 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css"; // Import your unique CSS file for Login
 import localAxios from "../../axios/axios";
+import Loading from "../../Components/Loader/Loading";
 
 function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [identifierBgColor, setIdentifierBgColor] = useState("input-blue");
   const [passwordBgColor, setPasswordBgColor] = useState("input-blue");
+  const [loading, setLoading] = useState(false);
 
   const identifierDom = useRef(null);
   const passwordDom = useRef(null);
@@ -54,12 +56,18 @@ function Login() {
     }
 
     try {
+      setLoading(true); // Start loading indicator
       const response = await localAxios.post("/users/login", userData);
       const { data } = response;
+
       // Save token to localStorage
       localStorage.setItem("token", data.token);
-      
-      navigate("/"); // Redirect to home page or any other route
+
+      // Simulate a delay to see the loading indicator (remove in production)
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/"); // Redirect to home page or any other route
+      }, 500); 
 
       console.log("Data:", data);
     } catch (error) {
@@ -69,12 +77,15 @@ function Login() {
       setErrorMessage(errorMsg);
       setIdentifierBgColor("input-red");
       setPasswordBgColor("input-red");
+      setLoading(false);
       console.log("Error:", errorMsg);
     }
   };
 
   return (
     <section className="login-section">
+      {loading && <Loading />}{" "}
+      {/* Display Loading component when loading is true */}
       <form className="login-form" onSubmit={handleSubmit}>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <div className="login-header">

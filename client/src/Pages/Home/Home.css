@@ -1,0 +1,43 @@
+/* Home.css */
+.home-main-container {
+  position: relative;
+  top: 100px;
+  margin-bottom: 200px;
+  font-family: 'Arial', sans-serif;
+}
+
+.home-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 100px;
+  margin: 20px;
+  background: #fff;
+  border-radius: 8px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease;
+}
+
+.home-screen-header button {
+  background-color: #516cf0;
+  color: white;
+  border: none;
+  width: 200px;
+  height: 40px;
+  margin: 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.home-screen-header button:hover {
+  background-color: #f78407;
+  transform: translateY(-2px);
+}
+
+.home-screen-header h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}

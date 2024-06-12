@@ -22,7 +22,7 @@ const authentication = async (req, res, next) =>{
     console.log("Decoded token is>>>", decodedToken);
 
     // Ensure to use the correct properties from the decoded token
-    const { userName, userID } = decodedToken; 
+    const { userName, userID, userFirstName } = decodedToken; 
     if (!userName || !userID) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -30,7 +30,7 @@ const authentication = async (req, res, next) =>{
     }
 
     // Assign the values to req.user
-    req.user = { userName, userID };
+    req.user = { userName, userID, userFirstName };
 
     next();
   } catch (error) {

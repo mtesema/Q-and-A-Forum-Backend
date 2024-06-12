@@ -19,7 +19,10 @@ const dbConnection = require("./Database/DBConfig");
 const userRoutes = require("./Routes/userRoutes");
 app.use("/api/users", userRoutes);
 
+
 //qustions routes middleware file??
+const questionsRoutes = require("./Routes/questionsRoute");
+app.use("/api/questions", questionsRoutes);
 
 //answers routes middleware fire??
 

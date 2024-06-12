@@ -104,7 +104,7 @@ const login = async (req, res) => {
         .json({ message: "User not found" });
     } else {
       const user = users[0];
-      console.log(user);
+      console.log("current login user info", user);
     }
 
     // Further authentication logic (e.g., comparing passwords) would go here
@@ -122,9 +122,14 @@ const login = async (req, res) => {
     // Generate JWT
     const userName = users[0].username;
     const userID = users[0].userid;
-    const token = jwt.sign({ userName, userID }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const userFirstName = users[0].firstname;
+    const token = jwt.sign(
+      { userName, userID, userFirstName },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res
       .status(StatusCodes.OK)
@@ -139,12 +144,17 @@ const login = async (req, res) => {
 
 const checkUser = async (req, res) => {
   try {
-    const { userName, userID } = req.user;
+    const { userName, userID, userFirstName } = req.user;
 
     // Respond with success message
     res
       .status(StatusCodes.OK)
-      .json({ message: "User authenticated successfully", userName, userID });
+      .json({
+        message: "User authenticated successfully",
+        userName,
+        userID,
+        userFirstName,
+      });
   } catch (error) {
     console.error("Error checking user:", error);
     res
