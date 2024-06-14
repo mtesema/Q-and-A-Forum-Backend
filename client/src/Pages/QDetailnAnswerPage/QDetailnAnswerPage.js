@@ -34,9 +34,9 @@ function QDetailnAnswerPage() {
     fetchQuestion();
   }, [user]);
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  // if (error) {
+  //   return <p>Error: {error.message}</p>;
+  // }
 
   if (!question) {
     return <Loading />;
@@ -55,6 +55,8 @@ function QDetailnAnswerPage() {
           <span>Asked by:{""}{user.userFirstName} </span>
           <span>Date: {new Date(question.date).toLocaleDateString()}</span>
         </div>
+        <h2>Comunity Answer</h2>
+        <hr />
         {/* Additional details or answers can be added here */}
       </div>
     </Includes>

@@ -18,8 +18,8 @@ router.post("/ask-questions", authMiddleWare, createQuestion);
 //get questions route
 router.get("/all-questions", authMiddleWare, getQuestions);
 
-// //get question route
-// router.get("/all-questions/:id", authMiddleWare, getQuestion);
+//get question route
+router.get('/question-detail/:id',authMiddleWare, getQuestion);
 
 // //update question route
 // router.put("/all-questions/:id", authMiddleWare, updateQuestion);

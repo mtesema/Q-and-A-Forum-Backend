@@ -24,7 +24,9 @@ app.use("/api/users", userRoutes);
 const questionsRoutes = require("./Routes/questionsRoute");
 app.use("/api/questions", questionsRoutes);
 
-//answers routes middleware fire??
+//answers routes middleware file
+const answersRoutes = require("./Routes/answersRoute");
+app.use("/api/answers", answersRoutes);
 
 const start = async () => {
   try {

@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const dbConnection = require("../Database/DBConfig");
 
+//Creating question 
 const createQuestion = async (req, res) => {
   const { questionid, description } = req.body;
   const { userID } = req.user; // Extract userID from req.user
@@ -32,6 +33,7 @@ const createQuestion = async (req, res) => {
   }
 };
 
+//Get all questions
 const getQuestions = async (req, res) => {
   const { userID } = req.user; // Extract userID from req.user
 
@@ -72,7 +74,37 @@ const getQuestions = async (req, res) => {
 };
 
 
+const getQuestion = async (req, res) => {
+  const { id } = req.params;
+  console.log("Question ID:", id); // Log the id
 
-module.exports = { createQuestion, getQuestions };
+  try {
+    // Check if question exists
+    const checkQuestionQuery = "SELECT * FROM questions WHERE id = ?";
+    const [questions] = await dbConnection.query(checkQuestionQuery, [id]);
+
+    console.log("Database query result:", questions); // Log the result to see what is returned
+
+    if (questions.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Question not found" });
+    }
+
+    return res.status(StatusCodes.OK).json({
+      message: "Question fetched successfully",
+      questions: questions[0],
+    });
+  } catch (error) {
+    console.error("Error fetching question:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to fetch question" });
+  }
+};
+
+
+
+module.exports = { createQuestion, getQuestions, getQuestion };
 
 
