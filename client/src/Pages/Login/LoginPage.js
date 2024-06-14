@@ -11,14 +11,7 @@ function LoginPage() {
       <div
         style={{
           backgroundImage: `url(${images.bg})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          height: "100vh", 
-          width: "100%", 
-          display: "flex",
-          alignItems: "center", // Optional: Center content vertically
-          justifyContent: "center", // Optional: Center content horizontally
+      
         }}
         className="login-main-page"
       >

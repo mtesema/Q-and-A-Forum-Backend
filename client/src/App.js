@@ -6,6 +6,7 @@ import axios from './axios/axios';
 import LoginPage from './Pages/Login/LoginPage';
 import AskQuestionPage from './Pages/AskQuestionPage/AskQuestionPage';
 import RegisterPage from './Pages/Register/RegisterPage';
+import QDetailnAnswerPage from './Pages/QDetailnAnswerPage/QDetailnAnswerPage';
 
 export const UserContext = createContext();
 
@@ -40,8 +41,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ask-questions" element={<AskQuestionPage />} />
+        <Route path="/question-detail/:id" element={<QDetailnAnswerPage />} />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+
+        <Route path="*" element={<Home />} />
       </Routes>
     </UserContext.Provider>
   );

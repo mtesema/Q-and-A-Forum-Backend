@@ -1,21 +1,29 @@
-import React, { useState, useContext } from "react";
-import "./AskQuestionPage.css";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../axios/axios"; // Assuming correct Axios import path
 import Includes from "../../Components/Includes";
 import Loading from "../../Components/Loader/Loading"; // Assuming you have a Loading component
 import { UserContext } from "../../App";
+import "./AskQuestionPage.css";
 
 function QuestionForm() {
   const { user } = useContext(UserContext);
-  const userId = user.userID; // Assuming user object has userID
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    questionid: "", // Use the correct property name
+    questionid: "",
     description: "",
-    userId: userId, // Include userId in formData
+    userId: user ? user.userID : null, // Include userId in formData
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        userId: user.userID,
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,8 +44,6 @@ function QuestionForm() {
 
     try {
       const token = localStorage.getItem("token");
-      console.log("Token:", token); // Check if token is available
-
       const response = await axios.post("/questions/ask-questions", formData, {
         headers: {
           Authorization: `Bearer ${token}`,

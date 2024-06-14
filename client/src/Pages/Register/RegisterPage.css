@@ -1,11 +1,22 @@
 .register-main-page {
   display: flex;
-  flex-direction: column; /* Adjusted to column for smaller screens */
+  flex-direction: row; /* Adjusted to column for smaller screens */
   justify-content: center;
   align-items: center;
-  background-color: #f4f4f4;
+  height: 100vh;
+  width: 100%;
+  margin: 20 auto;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  
+  background-color: hsl(0, 0%, 96%);
   gap: 40px;
-  padding-bottom: 100px;
+  padding: 40px;
+
+
 }
 
 .register-container {
@@ -30,7 +41,6 @@
   border: none;
   width: 200px;
   height: 40px;
-  margin-top: 20px;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
@@ -38,7 +48,7 @@
 }
 
 .login-link:hover {
-  background-color: #4058c6;
+  background-color:darkorange;
 }
 
 .about-container {

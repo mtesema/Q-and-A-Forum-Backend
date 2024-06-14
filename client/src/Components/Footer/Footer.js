@@ -1,5 +1,5 @@
 import React from "react";
-import "./Footer.css";
+import "./Footer.css"; // Import your CSS file
 import images from "../../Resource/Images";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -8,7 +8,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 function Footer() {
   return (
     <footer>
-      <div className="footer  text-white">
+      <div className="footer text-white">
         <div className="footer-main-container">
           {/* Logo and Social Icons */}
           <div className="logo-container">
