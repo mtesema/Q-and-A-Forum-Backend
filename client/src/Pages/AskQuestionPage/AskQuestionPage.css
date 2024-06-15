@@ -13,7 +13,6 @@
   background-color: #f0f0f0b3;
   border-radius: 8px;
   margin-bottom: 200px;
-
 }
 
 .question-help {
@@ -31,7 +30,6 @@
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 10px;
-
 }
 
 .form-container {
@@ -62,14 +60,41 @@
 }
 
 .input-field {
-  width: calc(100% - 20px);
+  width: calc(100% - 40px);
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
   outline: none;
   font-family: sans-serif;
+}
+
+.input-field-textfield {
+  width: calc(100% - 40px);
+  height: 100px;
+  resize: vertical;
+  margin-bottom: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  font-family: sans-serif;
+}
+
+.input-field::placeholder {
+  color: #999;
+  font-family: sans-serif;
+}
+
+.input-field:focus {
+  border-color: #ffb300;
+  box-shadow: 0 0 5px rgba(255, 179, 0, 0.5);
+} 
+.input-field-textfield:focus {
+  border-color: #ffb300;
+  box-shadow: 0 0 5px rgba(255, 179, 0, 0.5);
 }
 
 .submit-button {
@@ -86,4 +111,3 @@
 .submit-button:hover {
   background-color: #0056b3;
 }
-

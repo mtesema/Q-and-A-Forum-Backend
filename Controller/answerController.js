@@ -32,4 +32,41 @@ const createAnswer = async (req, res) => {
   }
 };
 
-module.exports = { createAnswer };
+
+
+
+const getAnswers = async (req, res) => {
+  const { id } = req.params; // Extract questionid from route params
+
+  try {
+    const getAnswerQuery = `
+      SELECT answers.*, users.username AS author 
+      FROM answers 
+      JOIN users ON answers.userid = users.userid 
+      WHERE answers.questionid = ?
+    `;
+    const [answers] = await dbConnection.query(getAnswerQuery, [id]);
+
+    console.log("Database query result:", answers);
+    return res.status(StatusCodes.OK).json({ answers });
+  } catch (error) {
+    console.error("Error fetching answers:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to fetch answers" });
+  }
+};
+
+// //delete answer 
+// const deleteAnswer = async (req, res) => {
+//   const { id } = req.params;
+
+//   try {
+//     const deleteAnswerQuery = "DELETE FROM answers WHERE id = ?";
+//     const [result] = await dbConnection.query(deleteAnswerQuery, [id]);
+
+//     console.log("Database query result:", result);
+
+
+module.exports = { createAnswer, 
+  getAnswers };

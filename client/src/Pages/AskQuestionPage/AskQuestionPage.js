@@ -100,7 +100,7 @@ function QuestionForm() {
             <textarea
               name="description"
               placeholder="Question Description"
-              className="input-field"
+              className="input-field-textfield"
               value={formData.description}
               onChange={handleChange}
               required

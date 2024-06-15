@@ -4,9 +4,14 @@ import { UserContext } from "../../App"; // Import UserContext for accessing use
 import images from "../../Resource/Images"; // Replace with your image import path
 import "./Header.css"; // Your CSS file for styling
 
+
 function Header() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+    const handleProfile = () => {
+      navigate("/profile");
+    };
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -36,10 +41,10 @@ function Header() {
         <nav className="header-nav">
           <ul className="header-nav-list">
             <li className="header-nav-item">
-              <Link to="/">Home</Link>
+              <Link to="/login">Home</Link>
             </li>
             <li className="header-nav-item">
-              <Link to="/">How it works?</Link>
+              <Link to="/login">How it works?</Link>
             </li>
           </ul>
         </nav>
@@ -57,6 +62,17 @@ function Header() {
             Register
           </Link>
         </div>
+
+        {user && (
+          <div className="header-profile" onClick={handleProfile}>
+            <img
+              src={images.avatar}
+              alt="Profile"
+              className="header-profile-image"
+            />
+            <span className="header-profile-name">{user.username}</span>
+          </div>
+        )}
       </div>
     </header>
   );
