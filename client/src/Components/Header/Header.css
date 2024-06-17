@@ -27,7 +27,7 @@
   align-items: center;
   gap: 20px;
   flex-grow: 1;
-  padding-right: 20px;
+  padding-right: 100px;
   min-width: 0;
 }
 
@@ -55,6 +55,9 @@
 
 .header-nav-item a:hover {
   color: #f78402;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+  text-decoration: underline;
 }
 
 .header-buttons {
@@ -68,6 +71,7 @@
   text-align: center;
   font-weight: bold;
   font-size: 16px;
+  width: 80px;
   background-color: #007bff;
   padding: 10px 15px;
   border-radius: 5px;
@@ -76,7 +80,11 @@
 }
 
 .header-button:hover {
-  background-color: #f78402;
+  background-color: #0069d9;
+      background-color: #ff8400;
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out;
+        background-image: linear-gradient(300deg, #e33f00, #ff7800)
 }
 
 .header-profile {
@@ -137,8 +145,9 @@
   }
 
   .header-button {
- 
-    padding: 8px 5px;
+    width: 60px;
+    text-align: center;
+     padding: 8px 10px;
     font-size: 14px;
   }
 

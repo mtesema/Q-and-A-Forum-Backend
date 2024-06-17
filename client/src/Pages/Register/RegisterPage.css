@@ -1,6 +1,6 @@
 .register-main-page {
   display: flex;
-  flex-direction: row; /* Adjusted to column for smaller screens */
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -11,12 +11,9 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  
   background-color: hsl(0, 0%, 96%);
   gap: 40px;
   padding: 40px;
-
-
 }
 
 .register-container {
@@ -48,29 +45,35 @@
 }
 
 .login-link:hover {
-  background-color:darkorange;
+  background-color: darkorange;
 }
 
-.about-container {
-  /* Adjust styling for the About container as needed */
-}
-
-/* Media query for tablets */
 @media (max-width: 768px) {
   .register-main-page {
-
     position: relative;
-    top: 200px;
-    bottom: 200px;
-    font-family: 'Arial', sans-serif;
-    overflow-y: auto;
+    top: 100px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    height: auto;
+  }
+
+  .register-container {
+    max-width: 100%;
+    padding: 20px;
   }
 }
 
-/* Media query for mobile devices */
 @media (max-width: 480px) {
   .register-main-page {
-    padding-bottom: 30px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+    height: auto;
   }
 
   .register-container {

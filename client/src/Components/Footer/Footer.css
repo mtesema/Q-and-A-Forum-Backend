@@ -88,11 +88,16 @@
 
 /* Media Query for Small Screens */
 @media screen and (max-width: 768px) {
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  .footer {  
+    font-size: 14px;
+    padding: 10px;
+    height: auto;
+    gap: 10px;
+    text-align: left;
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
+    margin-top: 200px;
   }
 
   .footer-main-container {

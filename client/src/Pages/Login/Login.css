@@ -64,7 +64,10 @@
 .login-form-group input:focus {
   outline: none;
   border-bottom: 3px solid #f78407;
-  transition: border-color 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+  transition: all 0.4s ease-in-out;
 }
 
 
@@ -113,7 +116,10 @@
 }
 
 .login-section button:hover {
-  background-color: #ff8400;
+    background-color: #ff8400;
+      -webkit-transition: all .4s ease-in-out;
+      transition: all .4s ease-in-out;
+      background-image: linear-gradient(90deg, #fd4902, #ff7800);
 }
 
 @media screenand and (max-width: 738px) {

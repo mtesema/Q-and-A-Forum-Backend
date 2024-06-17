@@ -27,25 +27,26 @@
 
 @media screen and (max-width: 738px) {
   .login-main-page {
+    padding-bottom: 30px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin-bottom: 100px;
     align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-    padding-top: 120px;
-    padding-bottom: 100px;
-    gap: 40px;
-    padding-bottom: 100px;
+
+
+      margin: auto;
+   
+      background-color: hsl(0, 0%, 96%);
+      gap: 40px;
+      padding: 40px;
+    padding-bottom: 200px;
+
+    
   }
 
-  .background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.8;
-  }
+
 }
