@@ -253,7 +253,7 @@ function QDetailnAnswerPage() {
                                 answer.creation_date
                               ).toLocaleDateString()}`}
                         </span>
-                        <div>
+                        <div className="detail-modes">
                           <button
                             className="answer-button"
                             onClick={() => handleView(answer.id)}

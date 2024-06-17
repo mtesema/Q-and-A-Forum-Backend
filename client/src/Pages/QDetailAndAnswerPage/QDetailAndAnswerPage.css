@@ -13,14 +13,14 @@
 .question-detail h1 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #F77411;
+  color: #f77411;
   font-weight: bold;
 }
 
 .question-detail h2 {
   font-size: 20px;
   margin-bottom: 10px;
-  color: #F77411;
+  color: #f77411;
   font-weight: bold;
 }
 
@@ -45,15 +45,10 @@
 
 .question-meta span:first-child {
   margin-right: 10px;
-  background-color: #21864C;
+  background-color: #21864c;
   color: #fff;
   padding: 5px 10px;
   border-radius: 4px;
-}
-
-.question-meta span:second-child {
-  margin-left: 10px;
-  background-color: #21864C;
 }
 
 .question-meta span:last-child {
@@ -99,10 +94,6 @@
   background-image: linear-gradient(310deg, #e33f00, #ff7800);
 }
 
-.question-answer button:active {
-  top: 1px;
-}
-
 .answers-list .answer-item {
   background-color: #ffffff;
   padding: 20px;
@@ -112,7 +103,7 @@
   border: 1px solid #e1e1e1;
 }
 
-.answers-list textarea{
+.answers-list textarea {
   width: 95%;
   height: 200px;
   padding: 20px;
@@ -173,14 +164,88 @@
   .question-meta {
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px solid #ddd;
+
+  }
+
+  .detail-modes{
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    
   }
 
   .question-meta span {
     margin-top: 5px;
+    font-size: 14px;
+
+    width: auto;
   }
-  
+
+ .question-meta-left{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+ }
+  .question-meta .answers-number {
+    background-color: #21864C;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    gap: 20px;
+  }
+
+  .question-meta span:first-child {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .question-meta span:last-child {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+
   .question-answer textarea {
     font-size: 14px;
-    padding: 10px;
+    padding: 15px;
+    height: 150px;
+  }
+
+  .question-answer button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .answers-list .answer-item {
+    padding: 15px;
+  }
+
+  .answer-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .answer-meta span {
+    margin-top: 5px;
+    width: auto;
+  }
+
+  .answer-meta span:first-child {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .answer-meta span:last-child {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+
+  .answer-button {
+    margin-left: 0;
+    margin-top: 5px;
   }
 }
