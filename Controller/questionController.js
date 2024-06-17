@@ -166,10 +166,54 @@ const putIncrement = async (req, res) => {
   }
 };
 
+//DELETE QUESTION 
+
+const deleteQuestion = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Check if there are dependent rows in answers table
+    const checkAnswersQuery = "SELECT * FROM answers WHERE questionid = ?";
+    const [answers] = await dbConnection.query(checkAnswersQuery, [id]);
+
+    // If there are answers related to the question, handle them first
+    if (answers.length > 0) {
+      // Option 1: Delete answers related to the question
+      const deleteAnswersQuery = "DELETE FROM answers WHERE questionid = ?";
+      await dbConnection.query(deleteAnswersQuery, [id]);
+
+      // Option 2: Update answers to remove the question reference (if applicable)
+      // const updateAnswersQuery = 'UPDATE answers SET questionid = NULL WHERE questionid = ?';
+      // await dbConnection.query(updateAnswersQuery, [id]);
+    }
+
+    // Now delete the question
+    const deleteQuestionQuery = "DELETE FROM questions WHERE id = ?";
+    const [result] = await dbConnection.query(deleteQuestionQuery, [id]);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Question not found" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "Question deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Failed to delete question" });
+  }
+};
+
+
 module.exports = {
   createQuestion,
   getQuestions,
   getQuestion,
   getuesrQuestions,
   putIncrement,
+  deleteQuestion,
 };

@@ -7,12 +7,14 @@ import Localaxios from "../../axios/axios";
 import "./Home.css";
 import images from "../../Resource/Images";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import SearchIcon from "@mui/icons-material/Search"; // Importing the search icon
 
 function Home() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [questionsPerPage, setQuestionsPerPage] = useState(3);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user } = useContext(UserContext);
   const username = user ? user.userName : "Guest";
   const userFirstName = user ? user.userFirstName : "Guest";
@@ -21,40 +23,8 @@ function Home() {
     navigate("/ask-questions");
   };
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
-
-        const response = await Localaxios.get("/questions/all-questions", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === StatusCodes.OK) {
-          setQuestions(response.data.questions);
-        } else {
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-        }
-        // Handle errors: Display a message to the user or retry fetching questions
-      }
-    };
-
-    fetchQuestions();
-  }, [navigate]);
-
   const truncateDescription = (description, maxLength = 150) => {
-    if (!description) return ""; // Handle cases where description is null or undefined
+    if (!description) return "";
 
     if (description.length <= maxLength) {
       return description;
@@ -63,9 +33,73 @@ function Home() {
     }
   };
 
+  // Function to fetch questions from server
+  const fetchQuestions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      const response = await Localaxios.get("/questions/all-questions", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === StatusCodes.OK) {
+        setQuestions(response.data.questions);
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []); // Fetch questions on component mount
+
+  const handleDeleteQuestion = async (questionId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this question? This action cannot be undone."
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      await Localaxios.delete(`/questions/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // After successful deletion, fetch updated questions from server
+      fetchQuestions();
+    } catch (error) {
+      console.error("Error deleting question:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+      }
+    }
+  };
+
   const handleQuestionsPerPageChange = (event) => {
     setQuestionsPerPage(parseInt(event.target.value, 10));
-    setCurrentPage(1); // Reset to the first page when the number of questions per page changes
+    setCurrentPage(1);
   };
 
   const handleQuestionClick = async (questionId) => {
@@ -82,7 +116,6 @@ function Home() {
         },
       });
 
-      // Redirect to the question detail page
       navigate(`/question-detail/${questionId}`);
     } catch (error) {
       console.error("Error counting question view:", error);
@@ -92,18 +125,22 @@ function Home() {
     }
   };
 
+  const filteredQuestions = questions.filter((question) =>
+    question.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const renderQuestions = () => {
-    if (questions.length === 0) {
+    if (filteredQuestions.length === 0) {
       return <p>No questions available</p>;
     }
 
-    const sortedQuestions = [...questions].reverse();
-    const indexOfLastQuestion = currentPage * questionsPerPage;
-    const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
-    const currentQuestions = sortedQuestions.slice(
-      indexOfFirstQuestion,
-      indexOfLastQuestion
-    );
+     const sortedQuestions = [...questions].reverse();
+     const indexOfLastQuestion = currentPage * questionsPerPage;
+     const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+     const currentQuestions = sortedQuestions.slice(
+       indexOfFirstQuestion,
+       indexOfLastQuestion
+     );
 
     return currentQuestions.map((question) => (
       <div className="question-item" key={question.id}>
@@ -143,12 +180,22 @@ function Home() {
               </div>
             </div>
             <div className="question-card-footer-left">
-              <span className="question-author">
-                Asked by: {question.username}
-              </span>
-              <span className="question-date">
-                Date: {new Date(question.created_at).toLocaleDateString()}
-              </span>
+              <div>
+                <span className="question-author">
+                  Asked by: {question.username}
+                </span>
+                <span className="question-date">
+                  Date: {new Date(question.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              {user&&user.userID === question.userid && (
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteQuestion(question.id)}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -156,7 +203,7 @@ function Home() {
     ));
   };
 
-  const pageNumbers = Math.ceil(questions.length / questionsPerPage);
+  const pageNumbers = Math.ceil(filteredQuestions.length / questionsPerPage);
 
   const renderPagination = () => {
     return Array.from({ length: pageNumbers }, (_, index) => index + 1).map(
@@ -192,6 +239,24 @@ function Home() {
               <option value={20}>20</option>
             </select>
           </label>
+        </div>
+
+        <div className="search-container">
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search questions..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <SearchIcon
+            className="search-icon"
+            onClick={() => setSearchQuery(searchQuery)}
+            sx={{ cursor: "pointer" }}
+            fill="none"
+            fontSize="small"
+            color="F78402"
+          />
         </div>
         <div className="questions-list">{renderQuestions()}</div>
         <div className="pagination">{renderPagination()}</div>

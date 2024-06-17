@@ -30,12 +30,14 @@ router.put("/increment/:id", authMiddleWare, putIncrement);
 //get question route
 router.get('/question-detail/:id',authMiddleWare, getQuestion);
 
+//delete question route
+router.delete("/:id", authMiddleWare, deleteQuestion);
+
 
 // //update question route
 // router.put("/all-questions/:id", authMiddleWare, updateQuestion);
 
-// //delete question route
-// router.delete("/all-questions/:id", authMiddleWare, deleteQuestion);
+
 
 module.exports = router;
 

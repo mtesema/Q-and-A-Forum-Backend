@@ -5,15 +5,20 @@ import { UserContext } from "../../App";
 import Localaxios from "../../axios/axios";
 import Includes from "../../Components/Includes";
 import Loading from "../../Components/Loader/Loading";
+import Modal from "../../Components/Modal/Modal";
 
 function QDetailnAnswerPage() {
   const { user } = useContext(UserContext);
   const content = useRef(null);
-  const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingAnswerId, setEditingAnswerId] = useState(null);
+  const [editedContent, setEditedContent] = useState("");
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -28,7 +33,7 @@ function QDetailnAnswerPage() {
           }
         );
 
-        const fetchedQuestion = response.data.question[0]; // Access the first element of the array
+        const fetchedQuestion = response.data.question[0];
         setQuestion(fetchedQuestion);
         console.log("Question fetched successfully:", fetchedQuestion);
       } catch (error) {
@@ -37,21 +42,19 @@ function QDetailnAnswerPage() {
         setLoading(false);
       }
     };
-    fetchQuestion();
-  }, [id]); // Include id in the dependency array to refetch question when id changes
 
-  // Fetch all answers related to the question
+    fetchQuestion();
+  }, [id]);
+
   const fetchAnswers = async () => {
     try {
-      console.log("Fetching answers for ID:", id);
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
       const response = await Localaxios.get(`/answers/all-answers/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Answers fetched successfully:", response.data);
+
       setAnswers(response.data.answers);
     } catch (error) {
       console.error("Error fetching answers:", error);
@@ -61,12 +64,8 @@ function QDetailnAnswerPage() {
 
   useEffect(() => {
     fetchAnswers();
-  }, [id]); // Include id in the dependency array to refetch answers when id changes
+  }, [id]);
 
-  console.log("answers", answers.length)
-  
-
-  // Post new answer
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,11 +85,90 @@ function QDetailnAnswerPage() {
       );
 
       console.log("Answer posted successfully:", response);
-      fetchAnswers(); // Fetch answers again to update the UI with the latest data
-
-      content.current.value = ""; // Clear the textarea after successful submission
+      fetchAnswers();
+      content.current.value = "";
     } catch (error) {
       console.error("Error posting answer:", error);
+    }
+  };
+
+  const handleDelete = async (answerID) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this answer? This action cannot be undone."
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await Localaxios.delete(
+        `/answers/delete-answer/${answerID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Answer deleted successfully:", response);
+      fetchAnswers();
+    } catch (error) {
+      console.error("Error deleting answer:", error);
+    }
+  };
+
+  const handleView = async (answerID) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await Localaxios.get(
+        `/answers/view-answer/${answerID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setSelectedAnswer(response.data.answer);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error viewing answer:", error);
+    }
+  };
+
+  const handleUpdate = async (answerID, updatedContent) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await Localaxios.put(
+        `/answers/edit-answer/${answerID}`,
+        {
+          content: updatedContent,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Answer updated successfully:", response);
+      fetchAnswers();
+      setEditingAnswerId(null);
+      setEditedContent("");
+    } catch (error) {
+      console.error("Error updating answer:", error);
+    }
+  };
+
+  const truncateDescription = (description, maxLength = 250) => {
+    if (!description) return "";
+
+    if (description.length <= maxLength) {
+      return description;
+    } else {
+      return description.substring(0, maxLength) + "...";
     }
   };
 
@@ -103,7 +181,7 @@ function QDetailnAnswerPage() {
   }
 
   if (!question) {
-    return <p>Error: Question not found</p>; // Handle case where question is not loaded
+    return <p>Error: Question not found</p>;
   }
 
   return (
@@ -126,21 +204,89 @@ function QDetailnAnswerPage() {
         <div className="answers-section">
           <h2>Community Answers</h2>
           <hr />
-
           <div className="answers-list">
-            {answers.map((answer) => (
-              <div key={answer.id} className="answer-item">
-                <p>{answer.content}</p>
-                <div className="answer-meta">
-                  <span>Answered by: {answer.author}</span>
-
-                  <span>
-                    Date: {new Date(answer.creation_date).toLocaleDateString()}
-                  </span>
+            {answers.map((answer) => {
+              console.log(
+                "Answer timestamps:",
+                answer.creation_date,
+                answer.updated_at
+              );
+              return (
+                <div key={answer.id} className="answer-item">
+                  {editingAnswerId === answer.id ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleUpdate(answer.id, editedContent);
+                      }}
+                    >
+                      <textarea
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                        className="answer-input"
+                      ></textarea>
+                      <div>
+                        <button type="submit" className="answer-button">
+                          Update Answer
+                        </button>
+                        <button
+                          type="button"
+                          className="answer-button"
+                          onClick={() => setEditingAnswerId(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <p>{truncateDescription(answer.content, 300)}</p>
+                      <div className="answer-meta">
+                        <span>Answered by: {answer.author}</span>
+                        <span>
+                          {new Date(answer.updated_at).getTime() !==
+                          new Date(answer.creation_date).getTime()
+                            ? `Answer updated on ${new Date(
+                                answer.updated_at
+                              ).toLocaleDateString()}`
+                            : `Date: ${new Date(
+                                answer.creation_date
+                              ).toLocaleDateString()}`}
+                        </span>
+                        <div>
+                          <button
+                            className="answer-button"
+                            onClick={() => handleView(answer.id)}
+                          >
+                            View Answer
+                          </button>
+                          {answer.userid === user.userID && (
+                            <>
+                              <button
+                                className="answer-button"
+                                onClick={() => {
+                                  setEditingAnswerId(answer.id);
+                                  setEditedContent(answer.content);
+                                }}
+                              >
+                                Edit Answer
+                              </button>
+                              <button
+                                className="answer-button"
+                                onClick={() => handleDelete(answer.id)}
+                              >
+                                Delete Answer
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  <hr />
                 </div>
-                <hr />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -161,6 +307,12 @@ function QDetailnAnswerPage() {
             </button>
           </form>
         </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          answer={selectedAnswer}
+        />
       </div>
     </Includes>
   );
