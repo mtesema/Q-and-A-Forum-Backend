@@ -159,10 +159,40 @@ const updateAnswer = async (req, res) => {
   }
 };
 
+const putIncrement = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Increment views count in the database
+    const incrementViewsQuery = `
+      UPDATE answers
+      SET views = views + 1
+      WHERE id = ?
+    `;
+    const [result] = await dbConnection.query(incrementViewsQuery, [id]);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Answer not found" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "Views incremented successfully" });
+  } catch (error) {
+    console.error("Error incrementing views:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal server error" });
+  }
+};
+
 
 module.exports = { createAnswer, 
   getAnswers,
   deleteAnswer,
   viewAnswer,
-  updateAnswer
- };
+  updateAnswer,
+  putIncrement };  // Exporting all the functions
+

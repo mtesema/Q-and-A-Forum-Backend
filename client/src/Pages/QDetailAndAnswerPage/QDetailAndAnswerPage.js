@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./QDetailAndAnswerPage.css";
 import { UserContext } from "../../App";
 import Localaxios from "../../axios/axios";
 import Includes from "../../Components/Includes";
 import Loading from "../../Components/Loader/Loading";
 import Modal from "../../Components/Modal/Modal";
+import { toast } from "react-toastify";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function QDetailnAnswerPage() {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const content = useRef(null);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -122,6 +125,12 @@ function QDetailnAnswerPage() {
   const handleView = async (answerID) => {
     try {
       const token = localStorage.getItem("token");
+      await Localaxios.put(`/answers/increment/${answerID}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const response = await Localaxios.get(
         `/answers/view-answer/${answerID}`,
         {
@@ -131,7 +140,16 @@ function QDetailnAnswerPage() {
         }
       );
 
-      setSelectedAnswer(response.data.answer);
+      const updatedAnswer = response.data.answer;
+      updatedAnswer.viewed = true; // Set viewed flag
+
+      setAnswers((prevAnswers) =>
+        prevAnswers.map((answer) =>
+          answer.id === updatedAnswer.id ? updatedAnswer : answer
+        )
+      );
+
+      setSelectedAnswer(updatedAnswer);
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error viewing answer:", error);
@@ -205,88 +223,93 @@ function QDetailnAnswerPage() {
           <h2>Community Answers</h2>
           <hr />
           <div className="answers-list">
-            {answers.map((answer) => {
-              console.log(
-                "Answer timestamps:",
-                answer.creation_date,
-                answer.updated_at
-              );
-              return (
-                <div key={answer.id} className="answer-item">
-                  {editingAnswerId === answer.id ? (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleUpdate(answer.id, editedContent);
-                      }}
-                    >
-                      <textarea
-                        value={editedContent}
-                        onChange={(e) => setEditedContent(e.target.value)}
-                        className="answer-input"
-                      ></textarea>
-                      <div>
-                        <button type="submit" className="answer-button">
-                          Update Answer
-                        </button>
-                        <button
-                          type="button"
-                          className="answer-button"
-                          onClick={() => setEditingAnswerId(null)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  ) : (
-                    <>
-                      <p>{truncateDescription(answer.content, 300)}</p>
-                      <div className="answer-meta">
-                        <span>Answered by: {answer.author}</span>
-                        <span>
-                          {new Date(answer.updated_at).getTime() !==
+            {answers.map((answer) => (
+              <div key={answer.id} className="answer-item">
+                {editingAnswerId === answer.id ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleUpdate(answer.id, editedContent);
+                    }}
+                  >
+                    <textarea
+                      value={editedContent}
+                      onChange={(e) => setEditedContent(e.target.value)}
+                      className="answer-input"
+                    ></textarea>
+                    <div>
+                      <button type="submit" className="answer-button">
+                        Update 
+                      </button>
+                      <button
+                        type="button"
+                        className="answer-button"
+                        onClick={() => setEditingAnswerId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <p>{truncateDescription(answer.content, 300)}</p>
+                    <div className="answer-meta">
+                      <span>Answered by: {answer.author}</span>
+                      <span>
+                        {!answer.viewed &&
+                        new Date(answer.updated_at).getTime() !==
                           new Date(answer.creation_date).getTime()
-                            ? `Answer updated on ${new Date(
-                                answer.updated_at
-                              ).toLocaleDateString()}`
-                            : `Date: ${new Date(
-                                answer.creation_date
-                              ).toLocaleDateString()}`}
-                        </span>
-                        <div className="detail-modes">
-                          <button
-                            className="answer-button"
-                            onClick={() => handleView(answer.id)}
-                          >
-                            View Answer
-                          </button>
-                          {answer.userid === user.userID && (
-                            <>
-                              <button
-                                className="answer-button"
-                                onClick={() => {
-                                  setEditingAnswerId(answer.id);
-                                  setEditedContent(answer.content);
-                                }}
-                              >
-                                Edit Answer
-                              </button>
-                              <button
-                                className="answer-button"
-                                onClick={() => handleDelete(answer.id)}
-                              >
-                                Delete Answer
-                              </button>
-                            </>
-                          )}
-                        </div>
+                          ? `Answer updated on ${new Date(
+                              answer.updated_at
+                            ).toLocaleDateString()}`
+                          : `Date: ${new Date(
+                              answer.creation_date
+                            ).toLocaleDateString()}`}
+                      </span>
+                      <span className="VisibilityIcon">
+                        <VisibilityIcon
+                          fill="none"
+                          fontSize="small"
+                          viewBox="0 0 24 24"
+                          color="F78402"
+                          sx={{ cursor: "pointer" }}
+                        />
+                        Views: {answer.views}k
+                      </span>
+                      {/* Display view count */}
+                      <div className="detail-modes">
+                        <button
+                          className="answer-button"
+                          onClick={() => handleView(answer.id)}
+                        >
+                          View 
+                        </button>
+                        {answer.userid === user.userID && (
+                          <>
+                            <button
+                              className="answer-button"
+                              onClick={() => {
+                                setEditingAnswerId(answer.id);
+                                setEditedContent(answer.content);
+                              }}
+                            >
+                              Edit 
+                            </button>
+                            <button
+                              className="answer-button, answer-delete-button"
+                              onClick={() => handleDelete(answer.id)}
+                            >
+                              Delete 
+                            </button>
+                          </>
+                        )}
                       </div>
-                    </>
-                  )}
-                  <hr />
-                </div>
-              );
-            })}
+                    </div>
+                  </>
+                )}
+                <hr />
+              </div>
+            ))}
           </div>
         </div>
 

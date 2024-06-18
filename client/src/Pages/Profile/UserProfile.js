@@ -4,9 +4,11 @@ import { UserContext } from "../../App";
 import Localaxios from "../../axios/axios";
 import "./UserProfile.css"; // Import your CSS file for styling
 import images from "../../Resource/Images"; // Assuming you have an images file
+import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,6 +39,22 @@ function UserProfile() {
     fetchQuestions();
   }, [user]);
 
+  const handleQuestionClick = (questionId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      navigate(`/question-detail/${questionId}`);
+    } catch (error) {
+      console.error("Error counting question view:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+      }
+    }
+  };
+
   const truncateDescription = (description, maxLength = 150) => {
     if (!description) return "";
     return description.length <= maxLength
@@ -63,7 +81,7 @@ function UserProfile() {
 
         <div className="user-info">
           <div>
-            <img src={images.avatar} alt="Profile" />
+            <img src={images.avatar} alt="Profile" className="profile-img" />
           </div>
           <div className="user-details">
             <p>Hi {user.userFirstName}</p>
@@ -78,7 +96,11 @@ function UserProfile() {
             <p>No questions available</p>
           ) : (
             questions.map((question) => (
-              <div key={question.id} className="question-item">
+              <div
+                key={question.id}
+                onClick={() => handleQuestionClick(question.id)}
+                className="question-item"
+              >
                 <h3>{question.title}</h3>
                 <p>{truncateDescription(question.description)}</p>
               </div>

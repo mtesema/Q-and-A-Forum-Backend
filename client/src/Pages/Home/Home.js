@@ -8,6 +8,7 @@ import "./Home.css";
 import images from "../../Resource/Images";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search"; // Importing the search icon
+import Loading from "../../Components/Loader/Loading"; // Import your loading component
 
 function Home() {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [questionsPerPage, setQuestionsPerPage] = useState(3);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true); // State for loading indicator
+  const [loadingQuestionId, setLoadingQuestionId] = useState(""); // State for loading individual question
   const { user } = useContext(UserContext);
   const username = user ? user.userName : "Guest";
   const userFirstName = user ? user.userFirstName : "Guest";
@@ -58,6 +61,8 @@ function Home() {
       if (error.response) {
         console.error("Response data:", error.response.data);
       }
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
     }
   };
 
@@ -102,28 +107,36 @@ function Home() {
     setCurrentPage(1);
   };
 
-  const handleQuestionClick = async (questionId) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      await Localaxios.put(`/questions/increment/${questionId}`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      navigate(`/question-detail/${questionId}`);
-    } catch (error) {
-      console.error("Error counting question view:", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-      }
+const handleQuestionClick = async (questionId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  };
+
+    setLoadingQuestionId(questionId); // Set loading state for individual question
+
+    // Simulate delay for loading effect
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Adjust delay time as needed
+
+    await Localaxios.put(`/questions/increment/${questionId}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setLoadingQuestionId(""); // Disable loading state after successful fetch
+
+    navigate(`/question-detail/${questionId}`);
+  } catch (error) {
+    console.error("Error counting question view:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+    }
+    setLoadingQuestionId(""); // Ensure loading state is disabled on error
+  }
+};
 
   const filteredQuestions = questions.filter((question) =>
     question.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -134,13 +147,13 @@ function Home() {
       return <p>No questions available</p>;
     }
 
-     const sortedQuestions = [...questions].reverse();
-     const indexOfLastQuestion = currentPage * questionsPerPage;
-     const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
-     const currentQuestions = sortedQuestions.slice(
-       indexOfFirstQuestion,
-       indexOfLastQuestion
-     );
+    const sortedQuestions = [...questions].reverse();
+    const indexOfLastQuestion = currentPage * questionsPerPage;
+    const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
+    const currentQuestions = sortedQuestions.slice(
+      indexOfFirstQuestion,
+      indexOfLastQuestion
+    );
 
     return currentQuestions.map((question) => (
       <div className="question-item" key={question.id}>
@@ -188,7 +201,7 @@ function Home() {
                   Date: {new Date(question.created_at).toLocaleDateString()}
                 </span>
               </div>
-              {user&&user.userID === question.userid && (
+              {user && user.userID === question.userid && (
                 <button
                   className="delete-button"
                   onClick={() => handleDeleteQuestion(question.id)}
@@ -260,6 +273,13 @@ function Home() {
         </div>
         <div className="questions-list">{renderQuestions()}</div>
         <div className="pagination">{renderPagination()}</div>
+
+        {/* Loading indicator for individual question */}
+        {loadingQuestionId && (
+          <div className="loading-overlay">
+            <Loading />
+          </div>
+        )}
       </section>
     </Includes>
   );

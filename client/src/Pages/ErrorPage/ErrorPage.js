@@ -16,7 +16,7 @@ const ErrorPage = () => {
     <Includes>
       <div className="error-container">
         <div className="error-content">
-          <img src={images.errorImage} alt="Error" className="error-image" />
+          <img src={images.HeaderLogo} alt="Error" className="error-image" />
           <h2>Oops! Something went wrong.</h2>
           <p>We apologize for the inconvenience.</p>
           <p>Please try again later or contact support.</p>

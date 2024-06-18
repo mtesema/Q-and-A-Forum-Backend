@@ -38,3 +38,17 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.close-button:hover {
+  background-color:   #f77411;;
+  }
+
+@media (max-width: 768px){
+
+  .modal-content {
+    width: 400px;
+    padding: 20px;
+    margin: 20px;
+    }
+
+  }

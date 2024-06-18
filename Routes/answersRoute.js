@@ -9,6 +9,7 @@ const {
   deleteAnswer,
   viewAnswer,
   updateAnswer,
+  putIncrement,
 } = require("../Controller/answerController.js");
 
 // POST /api/answers/create-answer/:id
@@ -25,6 +26,10 @@ router.get("/view-answer/:id", authMiddleWare, viewAnswer);
 
 //edit/update a answer 
 router.put("/edit-answer/:id", authMiddleWare, updateAnswer);
+
+
+//Counte how many clicks 
+router.put("/increment/:id", authMiddleWare, putIncrement);
 
 
 
