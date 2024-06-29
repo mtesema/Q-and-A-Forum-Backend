@@ -183,6 +183,35 @@
     border-color 0.3s ease; /* Smooth transition */
 }
 
+.answer-input{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+.answer-input:focus{
+  outline: none;
+  border-color: #ffbf00;
+
+}
+
+.answer-edit-input {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  color: #af1919;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 /* Additional CSS for responsiveness */
 @media (max-width: 768px) {
   .question-detail {

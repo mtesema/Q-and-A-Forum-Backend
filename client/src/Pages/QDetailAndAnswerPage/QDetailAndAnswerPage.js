@@ -233,9 +233,10 @@ function QDetailnAnswerPage() {
                     }}
                   >
                     <textarea
+                      placeholder="Edit your answer..."
                       value={editedContent}
                       onChange={(e) => setEditedContent(e.target.value)}
-                      className="answer-input"
+                      className="answer-edit-input"
                     ></textarea>
                     <div>
                       <button type="submit" className="answer-button">

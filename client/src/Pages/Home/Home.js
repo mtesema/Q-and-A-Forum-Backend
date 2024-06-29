@@ -13,6 +13,7 @@ import Loading from "../../Components/Loader/Loading"; // Import your loading co
 function Home() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
+  console.log("all questions>>>>>>", questions);
   const [currentPage, setCurrentPage] = useState(1);
   const [questionsPerPage, setQuestionsPerPage] = useState(3);
   const [searchQuery, setSearchQuery] = useState("");
@@ -148,6 +149,7 @@ const handleQuestionClick = async (questionId) => {
     }
 
     const sortedQuestions = [...questions].reverse();
+    console.log(sortedQuestions);
     const indexOfLastQuestion = currentPage * questionsPerPage;
     const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
     const currentQuestions = sortedQuestions.slice(
