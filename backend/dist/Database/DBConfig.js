@@ -2,7 +2,6 @@ const mysql = require("mysql2");
 
 // Create a pool of connections to the database
 const dbConnection = mysql.createPool({
-  // socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock",
   user: process.env.ADMIN_USER,
   database: process.env.DATABASE,
   password: process.env.PASSWORD,
