@@ -1,5 +1,7 @@
 const mysql = require("mysql2");
 
+
+
 // Create a pool of connections to the database
 const dbConnection = mysql.createPool({
   user: process.env.ADMIN_USER,
@@ -8,6 +10,9 @@ const dbConnection = mysql.createPool({
   connectionLimit: 10,
   host: process.env.HOST,
 });
+
+
+
 
 // Get a connection from the pool
 dbConnection.getConnection((error, connection) => {

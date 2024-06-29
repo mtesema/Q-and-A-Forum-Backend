@@ -30,6 +30,7 @@ const start = async () => {
   try {
     // Check the connection
     const connection = await dbConnection.getConnection();
+    
     console.log("Successfully connected to MySQL on app.js");
 
     // Execute a test query
