@@ -46,6 +46,7 @@ const getQuestions = async (req, res) => {
       (SELECT COUNT(*) FROM answers a WHERE a.questionid = q.id) AS answerCount
       FROM questions q
       INNER JOIN users u ON q.userID = u.userid
+      ORDER BY q.id DESC
     `;
     const [questions] = await dbConnection.query(getQuestionsQuery);
     console.log("Database query result:", questions); // Log the result to see what is returned
